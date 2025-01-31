@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Security Challenge</title>
+</head>
+<body>
+    <h1>Welcome to the Security Challenge</h1>
+    <p>Try to find the XSS vulnerability!</p>
+    
+    <form method="GET">
+        <input type="text" name="name" placeholder="Enter your name">
+        <input type="submit" value="Submit">
+    </form>
+
+    <div id="output">
+        <!-- The vulnerable output will be displayed here -->
+    </div>
+
+    
+    <script>
+        // Get URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const name = urlParams.get('name');
+        
+        // Vulnerable code: directly inserting user input into HTML
+        if (name) {
+            document.getElementById('output').innerHTML = name;
+        }
+
+        // Override default alert to detect XSS attempts
+        const originalAlert = window.alert;
+        window.alert = function(msg) {
+            completeChallenge();
+            originalAlert(msg);
+        }
+
+        // Function to complete the challenge
+        function completeChallenge() {
+            originalAlert('Which ransomware group is this BTC address associated with bc1q0lwpz2yufw3x9as6f679lwk8jx43g44683x5mc and name one method of inital access they use');
+            document.getElementById('output').innerHTML += '<br>🎉 Success! 🎉';
+        }
+    </script>
+</body>
+</html>
